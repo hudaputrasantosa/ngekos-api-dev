@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
-const KosSchema = new mongoose.Schema({
+const PropertySchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -47,4 +47,4 @@ const KosSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.model("Kos", KosSchema);
+export default mongoose.model('Property', PropertySchema);
