@@ -1,5 +1,5 @@
 {
-  "name": "ngekos-api",
+  "name": "ngekos-backend-api",
   "version": "1.0.0",
   "description": "",
   "main": "./src/server.ts",
