@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { verifyUser } from '../../utils/verifyToken';
+import { verifyUser } from '../../utils/jwt';
 import {
   deleteUserById,
   getAllUsers,
