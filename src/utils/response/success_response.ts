@@ -6,6 +6,7 @@ type successResponseParameter = {
   message?: string;
   entityMessage?: string;
   data?: any;
+  cookieToken?: any;
 };
 
 type successResponse = {
@@ -20,7 +21,9 @@ export const successResponse = ({
   message,
   entityMessage,
   data,
+  cookieToken,
 }: successResponseParameter): Response => {
+  let response: Response = res;
   message = entityMessage && !message ? STATUS_MESSAGE_MAP[status]?.(entityMessage) : message;
   const payload: successResponse = {
     success: true,
@@ -28,5 +31,13 @@ export const successResponse = ({
     data: data ?? null,
   };
 
-  return res.status(status).json(payload).end();
+  if (cookieToken) {
+    response = res.cookie('access_token', cookieToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+    });
+  }
+
+  return response.status(status).json(payload).end();
 };
