@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { errorResponse } from '../utils/response/error_response';
-import User from '../models/user/user';
 import { STATUS_CODE } from '@/utils/enum/status_code';
 import { successResponse } from '@/utils/response/success_response';
 import { UserService } from '@/services/user.service';
@@ -27,14 +26,14 @@ export const updateUserById = async (
     if (error instanceof Error) {
       return errorResponse({
         res,
-        status: 500,
+        status: STATUS_CODE.INTERNAL_SERVER_ERROR,
         message: error.message,
         error,
       });
     } else {
       return errorResponse({
         res,
-        status: 500,
+        status: STATUS_CODE.INTERNAL_SERVER_ERROR,
         message: 'an error occurred while updating user',
       });
     }
@@ -56,14 +55,14 @@ export const deleteUserById = async (req: Request<{ id: string }>, res: Response
     if (error instanceof Error) {
       return errorResponse({
         res,
-        status: 500,
-        message: 'failed to update property',
+        status: STATUS_CODE.INTERNAL_SERVER_ERROR,
+        message: 'failed to update user',
         error,
       });
     } else {
       return errorResponse({
         res,
-        status: 500,
+        status: STATUS_CODE.INTERNAL_SERVER_ERROR,
         message: 'an error occurred while updating property',
       });
     }
@@ -72,35 +71,28 @@ export const deleteUserById = async (req: Request<{ id: string }>, res: Response
 
 export const getUserById = async (req: Request<{ id: string }>, res: Response): Promise<any> => {
   try {
-    const user = await User.findById(req.params.id);
+    const { id } = req.params;
 
-    if (!user) {
-      return errorResponse({
-        res,
-        status: STATUS_CODE.NOT_FOUND,
-        entityMessage: 'property',
-      });
-    }
+    const user = await userService.getUserById(id);
 
-    const { password, ...userWithoutPassword } = user.toObject();
     return successResponse({
       res,
       status: STATUS_CODE.SUCCESS,
       message: 'get user successfully',
-      data: userWithoutPassword,
+      data: user,
     });
   } catch (error) {
     if (error instanceof Error) {
       return errorResponse({
         res,
-        status: 500,
+        status: STATUS_CODE.INTERNAL_SERVER_ERROR,
         message: 'failed to get user',
         error,
       });
     } else {
       return errorResponse({
         res,
-        status: 500,
+        status: STATUS_CODE.INTERNAL_SERVER_ERROR,
         message: 'an error occurred while get user',
       });
     }
@@ -109,7 +101,8 @@ export const getUserById = async (req: Request<{ id: string }>, res: Response): 
 
 export const getAllUsers = async (req: Request, res: Response): Promise<any> => {
   try {
-    const users = await User.find().select('-password');
+    // filter added
+    const users = await userService.getAllUsers();
     return successResponse({
       res,
       status: STATUS_CODE.SUCCESS,
@@ -120,14 +113,14 @@ export const getAllUsers = async (req: Request, res: Response): Promise<any> => 
     if (error instanceof Error) {
       return errorResponse({
         res,
-        status: 500,
+        status: STATUS_CODE.INTERNAL_SERVER_ERROR,
         message: 'failed to get user',
         error,
       });
     } else {
       return errorResponse({
         res,
-        status: 500,
+        status: STATUS_CODE.INTERNAL_SERVER_ERROR,
         message: 'an error occurred while updating property',
       });
     }

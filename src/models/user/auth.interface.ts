@@ -8,3 +8,8 @@ interface LoginBody {
   username: string;
   password: string;
 }
+
+interface LoginResponse {
+  token: string;
+  user: IUserUpdate;
+}
