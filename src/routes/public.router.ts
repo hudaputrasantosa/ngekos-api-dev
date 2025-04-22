@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import { login, register } from '../controllers/auth.controller.js';
 import {
-  countByCity,
   countByType,
+  countPropertyByCity,
   getAllProperty,
   getPropertyById,
 } from '../controllers/property.controller.js';
@@ -18,7 +18,7 @@ v1Router.post('/login', validateLogin, login);
 // PROPERTI ROUTE
 v1Router.get('/', getAllProperty); //cache
 v1Router.get('/find/:id', getPropertyById); // cache
-v1Router.get('/countByCity', countByCity);
+v1Router.get('/countByCity', countPropertyByCity);
 v1Router.get('/countByType', countByType);
 
 // Mount all routes
